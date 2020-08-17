@@ -113,7 +113,7 @@ class pChart
         imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $C_White);
         imagecolortransparent($this->Picture, $C_White);
 
-        $this->setFontProperties("tahoma.ttf", 8);
+        $this->setFontProperties("Fonts/tahoma.ttf", 8);
     }
 
     /* Set if warnings should be reported */
@@ -505,6 +505,9 @@ class pChart
 
             $Position = imageftbbox($this->FontSize, 0, $this->FontName, $Value);
             $TextWidth = $Position[2] - $Position[0];
+            if($TextWidth > 40){
+                $TextWidth = 40 - ($TextWidth/40);
+            }
 
             if ($RightScale) {
                 imagettftext($this->Picture, $this->FontSize, 0, $this->GArea_X2 + 10, $YPos + ($this->FontSize / 2), $C_TextColor, $this->FontName, $Value);
@@ -580,7 +583,7 @@ class pChart
         /* Write the X Axis caption if set */
         if (isset($DataDescription["Axis"]["X"])) {
             $Position = imageftbbox($this->FontSize, 90, $this->FontName, $DataDescription["Axis"]["X"]);
-            $TextWidth = abs($Position[2]) + abs($Position[0]);
+            $TextWidth = abs($Position[2]) + abs($Position[0]) -50;
             $TextLeft = (($this->GArea_X2 - $this->GArea_X1) / 2) + $this->GArea_X1 + ($TextWidth / 2);
             imagettftext($this->Picture, $this->FontSize, 0, $TextLeft, $YMax + $this->FontSize + 5, $C_TextColor, $this->FontName, $DataDescription["Axis"]["X"]);
         }
@@ -958,7 +961,7 @@ class pChart
     }
 
     /* Draw the data legends */
-    function drawLegend($XPos, $YPos, $DataDescription, $R, $G, $B, $Rs = -1, $Gs = -1, $Bs = -1, $Rt = 0, $Gt = 0, $Bt = 0, $Border = TRUE)
+    function drawLegend($XPos, $YPos, $DataDescription, $R, $G, $B, $Rs = -1, $Gs = -1, $Bs = -1, $Rt = 0, $Gt = 0, $Bt = 0, $Border = FALSE)
     {
         /* Validate the Data and DataDescription array */
         $this->validateDataDescription("drawLegend", $DataDescription);
@@ -3591,7 +3594,7 @@ class pChart
         if ($Xi == $X && $Yi == $Y) {
             if ($Alpha == 100) {
                 $C_Aliased = $this->AllocateColor($this->Picture, $R, $G, $B);
-                imagesetpixel($this->Picture, $X, $Y, $C_Aliased);
+                imagesetpixel($this->Picture, $X, $Y, 255);
             } else
                 $this->drawAlphaPixel($X, $Y, $Alpha, $R, $G, $B);
         } else {

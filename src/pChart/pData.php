@@ -24,44 +24,44 @@ class pData
         $handle = @fopen($FileName, "r");
         if ($handle) {
             $HeaderParsed = FALSE;
-            while (!feof($handle)) {
-                $buffer = fgets($handle, 4096);
-                $buffer = str_replace(chr(10), "", $buffer);
-                $buffer = str_replace(chr(13), "", $buffer);
-                $Values = explode($Delimiter, $buffer);
+            while($Values = fgetcsv($handle)) {
 
-                if ($buffer != "") {
-                    if ($HasHeader == TRUE && $HeaderParsed == FALSE) {
-                        if ($DataColumns == -1) {
-                            $ID = 1;
-                            foreach ($Values as $key => $Value) {
-                                $this->SetSerieName($Value, "Serie" . $ID);
-                                $ID++;
+                     if (!empty($Values)) {
+                        if ($HasHeader == true && $HeaderParsed == false) {
+                            if ($DataColumns == -1) {
+                                $ID = 1;
+                                foreach ($Values as $key => $Value) {
+                                    $this->SetSerieName($Value, "Serie" . $ID);
+                                    $ID++;
+                                }
+                            } else {
+                                $SerieName = "";
+
+                                foreach ($DataColumns as $key => $Value) {
+                                    $this->SetSerieName($Values[$Value], "Serie" . $Value);
+                                }
                             }
+                            $HeaderParsed = true;
                         } else {
-                            $SerieName = "";
+                            if ($DataColumns == -1) {
+                                $ID = 1;
+                                foreach ($Values as $key => $Value) {
+                                    $this->AddPoint(intval($Value), "Serie" . $ID);
+                                    $ID++;
+                                }
+                            } else {
+                                $SerieName = "";
+                                if ($DataName != -1) {
+                                    $SerieName = $Values[$DataName];
+                                }
 
-                            foreach ($DataColumns as $key => $Value)
-                                $this->SetSerieName($Values[$Value], "Serie" . $Value);
-                        }
-                        $HeaderParsed = TRUE;
-                    } else {
-                        if ($DataColumns == -1) {
-                            $ID = 1;
-                            foreach ($Values as $key => $Value) {
-                                $this->AddPoint(intval($Value), "Serie" . $ID);
-                                $ID++;
+                                foreach ($DataColumns as $key => $Value) {
+                                    $this->AddPoint($Values[$Value], "Serie" . $Value, $SerieName);
+                                }
                             }
-                        } else {
-                            $SerieName = "";
-                            if ($DataName != -1)
-                                $SerieName = $Values[$DataName];
-
-                            foreach ($DataColumns as $key => $Value)
-                                $this->AddPoint($Values[$Value], "Serie" . $Value, $SerieName);
                         }
                     }
-                }
+
             }
             fclose($handle);
         }
@@ -81,15 +81,15 @@ class pData
 			}
 		}
 
-        if (count($Value) == 1) {
-            $this->Data[$ID][$Serie] = $Value;
+        if (@count($Value) == 1) {
+            $this->Data[$ID][$Serie] = floatval($Value);
             if ($Description != "")
                 $this->Data[$ID]["Name"] = $Description;
             elseif (!isset($this->Data[$ID]["Name"]))
                 $this->Data[$ID]["Name"] = $ID;
         } else {
             foreach ($Value as $key => $Val) {
-                $this->Data[$ID][$Serie] = $Val;
+                $this->Data[$ID][$Serie] = floatval($Val);
                 if (!isset($this->Data[$ID]["Name"]))
                     $this->Data[$ID]["Name"] = $ID;
                 $ID++;
@@ -205,4 +205,3 @@ class pData
     }
 }
 
-?>

@@ -1,5 +1,5 @@
 {
-    "name": "wp-statistics/pchart",
+    "name": "jeroenpost86/pchart",
     "description": "A PHP Class to build Charts",
     "type": "library",
     "license": "MIT",
@@ -7,11 +7,15 @@
         {
             "name": "Mostafa Soufi",
             "email": "mostafa.soufi@hotmail.com"
+        },
+        {
+            "name": "Jeroen Post",
+            "email": "jjpost@ucdavis.edu"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=7.4.0"
     },
     "autoload": {
         "psr-0": {
