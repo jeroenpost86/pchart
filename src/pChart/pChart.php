@@ -27,7 +27,7 @@ define("ALIGN_BOTTOM_RIGHT", 9);
 class pChart
 {
     /* Palettes definition */
-    var $Palette = array("0" => array("R" => 188, "G" => 224, "B" => 46),
+    var $Palette = array("0" => array("R" => 50, "G" => 50, "B" => 50),
         "1" => array("R" => 224, "G" => 100, "B" => 46),
         "2" => array("R" => 224, "G" => 214, "B" => 46),
         "3" => array("R" => 46, "G" => 151, "B" => 224),
